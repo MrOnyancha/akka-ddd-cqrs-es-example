@@ -26,12 +26,9 @@ object Main extends App {
 
   val bankAccountIdGenerator = IdGenerator.ofBankAccountId(dbConfig.profile, dbConfig.db)
 
-  val bankAccountAggregatesRef: ActorRef =
-    system.actorOf(ShardedBankAccountAggregates.props, ShardedBankAccountAggregates.name)
+  val bankAccountAggregatesRef: ActorRef = system.actorOf(ShardedBankAccountAggregates.props, ShardedBankAccountAggregates.name)
 
-  val bankAccountAggregateUseCase: BankAccountAggregateUseCase = new BankAccountAggregateUseCase(
-    new BankAccountAggregateFlowsImpl(bankAccountAggregatesRef)
-  )
+  val bankAccountAggregateUseCase: BankAccountAggregateUseCase = new BankAccountAggregateUseCase(new BankAccountAggregateFlowsImpl(bankAccountAggregatesRef))
 
   val bankAccountReadModelUseCase: BankAccountReadModelUseCase =
     new BankAccountReadModelUseCase(new BankAccountReadModelFlowsImpl(dbConfig.profile, dbConfig.db),

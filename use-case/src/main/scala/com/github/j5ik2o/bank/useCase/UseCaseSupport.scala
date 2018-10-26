@@ -1,24 +1,26 @@
 package com.github.j5ik2o.bank.useCase
 
-import akka.{ Done, NotUsed }
-import akka.stream.{ FlowShape, QueueOfferResult }
 import akka.stream.scaladsl.{ Flow, GraphDSL, Sink, SourceQueueWithComplete, Unzip, Zip }
+import akka.stream.{ FlowShape, QueueOfferResult }
+import akka.{ Done, NotUsed }
 
 import scala.concurrent.{ ExecutionContext, Future, Promise }
 
 object UseCaseSupport {
+
   implicit class FlowOps[A, B](val self: Flow[A, B, NotUsed]) extends AnyVal {
     def zipPromise: Flow[(A, Promise[B]), (B, Promise[B]), NotUsed] =
-      Flow
-        .fromGraph(GraphDSL.create() { implicit b =>
-          import GraphDSL.Implicits._
-          val unzip = b.add(Unzip[A, Promise[B]])
-          val zip   = b.add(Zip[B, Promise[B]])
-          unzip.out0 ~> self ~> zip.in0
-          unzip.out1 ~> zip.in1
-          FlowShape(unzip.in, zip.out)
-        })
+      Flow.fromGraph(GraphDSL.create() { implicit b =>
+        import GraphDSL.Implicits._
+
+        val unzip = b.add(Unzip[A, Promise[B]])
+        val zip   = b.add(Zip[B, Promise[B]])
+        unzip.out0 ~> self ~> zip.in0
+        unzip.out1 ~> zip.in1
+        FlowShape(unzip.in, zip.out)
+      })
   }
+
 }
 
 trait UseCaseSupport {

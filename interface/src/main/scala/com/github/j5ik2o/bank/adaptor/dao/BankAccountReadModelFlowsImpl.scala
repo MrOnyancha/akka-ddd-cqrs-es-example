@@ -64,7 +64,7 @@ class BankAccountReadModelFlowsImpl(val profile: JdbcProfile, val db: JdbcProfil
         )
     }
 
-  override def updateAccountFlow: Flow[(BankAccountId, String, Long, TimePoint), Int, NotUsed] =
+  override def updateAccountFlow : Flow[(BankAccountId, String, Long, TimePoint), Int, NotUsed] =
     Flow[(BankAccountId, String, Long, TimePoint)].mapAsync(1) {
       case (id, name, sequenceNr, occurredAt) =>
         db.run(
