@@ -3,18 +3,18 @@ import sbt._
 object Dependencies {
 
   object Versions {
-    val akka                = "2.5.9"
-    val akkaHttp            = "10.0.11"
-    val circe               = "0.9.1"
-    val slick               = "3.2.0"
-    val typeSafeConfig      = "1.3.1"
+    val akka                = "2.5.17"
+    val akkaHttp            = "10.1.5"
+    val circe               = "0.10.0"
+    val slick               = "3.2.3"
+    val typeSafeConfig      = "1.3.3"
     val hashids             = "1.0.3"
     val slf4J               = "1.7.25"
     val logback             = "1.2.3"
     val scalaTest           = "3.0.4"
-    val mySQLConnectorJava  = "5.1.42"
-    val akkaPersistenceJDBC = "3.2.0"
-    val levelDB             = "0.7"
+    val mySQLConnectorJava  = "8.0.13"
+    val akkaPersistenceJDBC = "3.4.0"
+    val levelDB             = "0.10"
     val levelDBJNIAll       = "1.8"
     val scalaTestPlusDB     = "1.0.5"
     val commonsIO           = "2.6"
@@ -23,7 +23,7 @@ object Dependencies {
     val pureConfig          = "0.9.0"
     val scalaCheck          = "1.13.5"
     val monocle             = "1.5.0"
-    val enumeratum          = "1.5.12"
+    val enumeratum          = "1.5.13"
   }
 
   object Hashids {

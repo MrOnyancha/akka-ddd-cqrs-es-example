@@ -7,7 +7,7 @@ import Utils._
 val baseSettings = Seq(
   organization := "com.github.j5ik2o",
   version := "0.0.1",
-  scalaVersion := "2.12.4",
+  scalaVersion := "2.12.7",
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",

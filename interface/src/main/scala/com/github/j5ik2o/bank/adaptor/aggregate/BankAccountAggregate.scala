@@ -1,9 +1,9 @@
 package com.github.j5ik2o.bank.adaptor.aggregate
 
-import akka.actor.{ ActorLogging, Props }
-import akka.persistence.{ PersistentActor, RecoveryCompleted, SaveSnapshotSuccess, SnapshotOffer }
+import akka.actor.{ActorLogging, Props}
+import akka.persistence.{PersistentActor, RecoveryCompleted, SaveSnapshotSuccess, SnapshotOffer}
 import cats.implicits._
-import com.github.j5ik2o.bank.domain.model.BankAccount.{ BankAccountError, InvalidStateError }
+import com.github.j5ik2o.bank.domain.model.BankAccount.{BankAccountError, InvalidStateError}
 import com.github.j5ik2o.bank.domain.model._
 import org.sisioh.baseunits.scala.money.Money
 import pureconfig._
@@ -29,7 +29,7 @@ object BankAccountAggregate {
     // ---
 
     case class OpenBankAccountRequest(bankAccountId: BankAccountId, name: BankAccountName)
-        extends BankAccountCommandRequest
+      extends BankAccountCommandRequest
 
     sealed trait OpenBankAccountResponse {
       val bankAccountId: BankAccountId
@@ -38,12 +38,12 @@ object BankAccountAggregate {
     case class OpenBankAccountSucceeded(bankAccountId: BankAccountId) extends OpenBankAccountResponse
 
     case class OpenBankAccountFailed(bankAccountId: BankAccountId, error: BankAccountError)
-        extends OpenBankAccountResponse
+      extends OpenBankAccountResponse
 
     // ---
 
     case class UpdateBankAccountRequest(bankAccountId: BankAccountId, name: BankAccountName)
-        extends BankAccountCommandRequest
+      extends BankAccountCommandRequest
 
     sealed trait UpdateBankAccountResponse {
       val bankAccountId: BankAccountId
@@ -52,7 +52,7 @@ object BankAccountAggregate {
     case class UpdateBankAccountSucceeded(bankAccountId: BankAccountId) extends OpenBankAccountResponse
 
     case class UpdateBankAccountFailed(bankAccountId: BankAccountId, error: BankAccountError)
-        extends OpenBankAccountResponse
+      extends OpenBankAccountResponse
 
     // ---
 
@@ -65,7 +65,7 @@ object BankAccountAggregate {
     case class CloseBankAccountSucceeded(bankAccountId: BankAccountId) extends CloseBankAccountResponse
 
     case class CloseBankAccountFailed(bankAccountId: BankAccountId, error: BankAccountError)
-        extends CloseBankAccountResponse
+      extends CloseBankAccountResponse
 
     // ---
 
@@ -132,18 +132,18 @@ class BankAccountAggregate extends PersistentActor with ActorLogging {
   private def applyState(event: BankAccountOpened): Either[BankAccountError, BankAccount] =
     Either.right(
       BankAccount(event.bankAccountId,
-                  event.name,
-                  isClosed = false,
-                  BankAccount.DEFAULT_MONEY_ZERO,
-                  event.occurredAt,
-                  event.occurredAt)
+        event.name,
+        isClosed = false,
+        BankAccount.DEFAULT_MONEY_ZERO,
+        event.occurredAt,
+        event.occurredAt)
     )
 
   private def mapState(
-      f: (BankAccount) => Either[BankAccountError, BankAccount]
-  ): Either[BankAccountError, BankAccount] =
+                        f: (BankAccount) => Either[BankAccountError, BankAccount]
+                      ): Either[BankAccountError, BankAccount] =
     for {
-      state    <- Either.fromOption(stateOpt, InvalidStateError())
+      state <- Either.fromOption(stateOpt, InvalidStateError())
       newState <- f(state)
     } yield newState
 
